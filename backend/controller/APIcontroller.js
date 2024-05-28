@@ -73,14 +73,15 @@ let addItem = async (req, res) => {
     const guarantee = req.body.guarantee || "";
     const weight = req.body.weight || "";
 
-    const result = await connection.execute('INSERT INTO item (name, img, price, ispopular) VALUES (:name, :img, :price, :isPopular)', [name, img, price, isPopular], { autoCommit: true });
-    
+    const result = await connection.execute('INSERT INTO item (id, name, img, price, ispopular) VALUES (item_id_seq.NEXTVAL, :name, :img, :price, :isPopular)', [name, img, price, isPopular], { autoCommit: true });
+
     if (productType === 'laptop') {
-        const temp = await connection.execute('INSERT INTO laptop (id, brand, guarantee, weight) VALUES ((SELECT MAX(id) FROM item), :brand, :guarantee, :weight)', [brand, guarantee, weight], { autoCommit: true });
+        const temp = await connection.execute('INSERT INTO laptop (id, brand, guarantee, weight) VALUES (item_id_seq.CURRVAL, :brand, :guarantee, :weight)', [brand, guarantee, weight], { autoCommit: true });
     } else if (productType === 'iphone') {
-        const temp = await connection.execute('INSERT INTO phone (id, brand, guarantee) VALUES ((SELECT MAX(id) FROM item), :brand, :guarantee)', [brand, guarantee], { autoCommit: true });
+        const temp = await connection.execute('INSERT INTO phone (id, brand, guarantee) VALUES (item_id_seq.CURRVAL, :brand, :guarantee)', [brand, guarantee], { autoCommit: true });
     } else {
-        const temp = await connection.execute('INSERT INTO other (id, brand) VALUES ((SELECT MAX(id) FROM item), :brand)', [brand], { autoCommit: true });
+        console.log(result);
+        const temp = await connection.execute('INSERT INTO other (id, brand) VALUES (item_id_seq.CURRVAL, :brand)', [brand], { autoCommit: true });
     }
 
     return res.status(200).json({ message: 'Add item successfully' });

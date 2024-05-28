@@ -3,9 +3,9 @@ const oracledb = require('oracledb');
 async function createConnection() {
     try {
         const connection = await oracledb.getConnection({
-            user: "son",
-            password: "123456",
-            connectString: "localhost/orcl"
+            user: "admin",
+            password: "123456789",
+            connectString: "shoppee.c768meqwquyg.ap-southeast-2.rds.amazonaws.com/orcl"
         });
 
         console.log('Connected to Oracle successfully');
