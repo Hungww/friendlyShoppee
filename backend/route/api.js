@@ -4,10 +4,6 @@ const APIcontroller = require('../controller/APIcontroller.js');
 const router = express.Router();
 
 const initApiRoutes = (app) => {
-    router.get('/', (req, res) => {
-        res.send('Welcome to Shoppee API');
-    });
-    
     router.post('/signup', APIcontroller.signUp);
     router.post('/login', APIcontroller.login);
 
